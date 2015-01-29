@@ -145,7 +145,10 @@ def extract_from_dir(dirname=None, method_map=DEFAULT_MAPPING,
                 os.path.join(root, filename).replace(os.sep, '/'),
                 dirname
             )
+            executed_methods = list()
             for pattern, method in method_map:
+                if method in executed_methods:
+                    break
                 if pathmatch(pattern, filename):
                     filepath = os.path.join(absname, filename)
                     options = {}
@@ -162,7 +165,7 @@ def extract_from_dir(dirname=None, method_map=DEFAULT_MAPPING,
                                             strip_comment_tags=
                                                 strip_comment_tags):
                         yield filename, lineno, message, comments, context
-                    break
+                    executed_methods.append(method)
 
 
 def extract_from_file(method, filename, keywords=DEFAULT_KEYWORDS,
